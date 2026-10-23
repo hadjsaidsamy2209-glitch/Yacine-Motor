@@ -1,0 +1,20 @@
+{
+  "name": "yacine-motors",
+  "version": "1.0.0",
+  "description": "Site de location de véhicules de Yacine Motors (Marseille) : catalogue, contact et demandes de réservation envoyés sur Telegram.",
+  "private": true,
+  "scripts": {
+    "start": "node --env-file=.env src/server.js",
+    "dev": "node --watch --env-file=.env src/server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20.6"
+  },
+  "dependencies": {
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0"
+  }
+}

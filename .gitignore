@@ -1,0 +1,12 @@
+# Dépendances installées par npm
+node_modules/
+
+# Secrets : ne jamais commiter. Seul .env.example (sans valeurs réelles) est versionné.
+.env
+.env.*
+!.env.example
+
+# Journaux et fichiers propres au système
+npm-debug.log*
+.DS_Store
+Thumbs.db
