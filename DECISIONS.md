@@ -64,8 +64,10 @@ Chaque décision suit le même format : problème, options, choix, raison. Les p
 
 ## D10. Images manquantes
 
-- **Choix** : le serveur vérifie au démarrage si chaque image existe et utilise une image de remplacement sinon.
-- **Raison** : aucun script dans le HTML, compatible avec la politique de sécurité de `helmet`. Le fichier `vehicles.json` n'est pas modifié.
+- **Options** : image de remplacement (fichier) ; bloc visuel en CSS sans image ; cartes en texte seul.
+- **Choix** : aucune image n'étant fournie, toutes les cartes et pages affichent un bloc gris clair portant la catégorie du véhicule (« Sportive », « SUV »…). Les chemins d'images du fichier ne sont pas utilisés, et aucun fichier d'image de remplacement n'est ajouté.
+- **Raison** : pas de question de droits d'auteur (un dépôt public ne doit pas contenir d'images sans licence), cohérent avec la direction typographique (D17), moins de code (pas de vérification de fichiers), aucun script dans le HTML (compatible avec la politique de sécurité de `helmet`). Le fichier `vehicles.json` n'est pas modifié.
+- **Limite et suite** : si des photos sont ajoutées plus tard, il faudra vérifier leur existence côté serveur avant de les afficher, avec le bloc gris en arrière-plan et un texte alternatif.
 
 ## D11. Gestion des erreurs
 
