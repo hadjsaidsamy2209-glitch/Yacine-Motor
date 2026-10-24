@@ -153,6 +153,147 @@ main {
   transform: scale(0.97);
 }
 
+/* Catalogue */
+.page-intro {
+  color: var(--muted);
+  font-size: 1.125rem;
+}
+
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vehicle-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.vehicle-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+}
+
+/* Pas de photo fournie : bloc neutre portant la catégorie (voir DECISIONS.md, D10). */
+.vehicle-visual {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  background: #ececf0;
+  color: var(--muted);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.vehicle-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+}
+
+.vehicle-body h2 {
+  margin: 0;
+  font-size: 1.375rem;
+}
+
+.vehicle-body h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Lien étiré : le lien du titre couvre toute la carte. */
+.vehicle-body h2 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.vehicle-body h2 a:focus-visible {
+  outline: none;
+}
+
+.vehicle-body h2 a:focus-visible::after {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+  border-radius: var(--radius);
+}
+
+.vehicle-meta,
+.vehicle-version {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.vehicle-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9375rem;
+  list-style: none;
+}
+
+.vehicle-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: #ececf0;
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.badge-ok {
+  background: #e3f4e8;
+  color: #1e6b34;
+}
+
+.badge-off {
+  background: #e8e8ed;
+  color: #424245;
+}
+
+.vehicle-price {
+  margin: auto 0 0;
+  padding-top: 0.5rem;
+  color: var(--muted);
+}
+
+.vehicle-price strong {
+  color: var(--text);
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* Le bouton passe au-dessus du lien étiré pour rester cliquable. */
+.vehicle-card .button {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
 /* Préférences d'accessibilité */
 @media (prefers-reduced-motion: reduce) {
   * {

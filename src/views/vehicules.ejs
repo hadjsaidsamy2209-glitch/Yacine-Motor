@@ -1,0 +1,39 @@
+<%- include('partials/header', { title: 'Véhicules' }) %>
+<h1>Nos véhicules</h1>
+<p class="page-intro"><%= vehicles.length %> véhicules à louer à <%= agency.ville %>.</p>
+
+<ul class="vehicle-grid">
+  <% vehicles.forEach((vehicle) => { %>
+    <li>
+      <article class="vehicle-card">
+        <div class="vehicle-visual"><%= vehicle.categorie %></div>
+        <div class="vehicle-body">
+          <p class="vehicle-meta"><%= vehicle.annee %> · <%= vehicle.carburant %></p>
+          <h2><a href="/vehicules/<%= vehicle.slug %>"><%= vehicle.marque %> <%= vehicle.modele %></a></h2>
+          <p class="vehicle-version"><%= vehicle.version %></p>
+
+          <ul class="vehicle-specs">
+            <li><%= vehicle.puissance_ch %> ch</li>
+            <li><%= vehicle.boite %></li>
+            <li><%= vehicle.places %> places</li>
+          </ul>
+
+          <div class="vehicle-badges">
+            <% if (vehicle.disponible) { %>
+              <span class="badge badge-ok">Disponible</span>
+            <% } else { %>
+              <span class="badge badge-off">Indisponible<% if (vehicle.indisponible_jusqu_au) { %> jusqu'au <%= formatDate(vehicle.indisponible_jusqu_au) %><% } %></span>
+            <% } %>
+            <% if (vehicle.age_minimum) { %>
+              <span class="badge"><%= vehicle.age_minimum %> ans min. · <%= vehicle.permis_minimum_annees %> ans de permis</span>
+            <% } %>
+          </div>
+
+          <p class="vehicle-price"><strong><%= formatPrice(vehicle.prix_jour) %></strong> / jour</p>
+          <a class="button" href="/vehicules/<%= vehicle.slug %>#reservation">Demander une réservation</a>
+        </div>
+      </article>
+    </li>
+  <% }); %>
+</ul>
+<%- include('partials/footer') %>
