@@ -24,3 +24,4 @@ function findBySlug(slug) {
 }
 
 module.exports = { agency, listVehicles, findBySlug };
+
