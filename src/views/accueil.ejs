@@ -1,4 +1,7 @@
 <%- include('partials/header', { title: 'Accueil' }) %>
-<h1><%= agency.nom %></h1>
-<p>Location de véhicules à <%= agency.ville %></p>
+<section class="hero">
+  <h1><%= agency.nom %></h1>
+  <p>Location de véhicules à <%= agency.ville %>. Choisissez votre véhicule, envoyez votre demande, l'agence vous répond.</p>
+  <a class="button" href="/vehicules">Voir les véhicules</a>
+</section>
 <%- include('partials/footer') %>
