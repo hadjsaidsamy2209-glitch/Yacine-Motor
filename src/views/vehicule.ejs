@@ -1,0 +1,69 @@
+<%- include('partials/header', { title: vehicle.marque + ' ' + vehicle.modele }) %>
+<a class="back-link" href="/vehicules">← Tous les véhicules</a>
+
+<header class="detail-header">
+  <p class="vehicle-meta"><%= vehicle.annee %> · <%= vehicle.carburant %></p>
+  <h1><%= vehicle.marque %> <%= vehicle.modele %></h1>
+  <p class="detail-version"><%= vehicle.version %></p>
+  <div class="vehicle-badges">
+    <% if (vehicle.disponible) { %>
+      <span class="badge badge-ok">Disponible</span>
+    <% } else { %>
+      <span class="badge badge-off">Indisponible<% if (vehicle.indisponible_jusqu_au) { %> jusqu'au <%= formatDate(vehicle.indisponible_jusqu_au) %><% } %></span>
+    <% } %>
+    <% if (vehicle.age_minimum) { %>
+      <span class="badge"><%= vehicle.age_minimum %> ans min. · <%= vehicle.permis_minimum_annees %> ans de permis</span>
+    <% } %>
+  </div>
+</header>
+
+<div class="vehicle-visual vehicle-visual-large"><%= vehicle.categorie %></div>
+
+<section class="price-panel" aria-label="Tarifs">
+  <p class="price-main"><strong><%= formatPrice(vehicle.prix_jour) %></strong> / jour</p>
+  <ul class="price-facts">
+    <li>Caution : <strong><%= formatPrice(vehicle.caution) %></strong></li>
+    <li><strong><%= vehicle.km_inclus_jour %> km</strong> inclus par jour</li>
+  </ul>
+</section>
+
+<% if (vehicle.age_minimum) { %>
+  <p class="notice">
+    Ce véhicule est réservé aux conducteurs de <strong><%= vehicle.age_minimum %> ans minimum</strong>,
+    titulaires du permis depuis au moins <strong><%= vehicle.permis_minimum_annees %> ans</strong>.
+  </p>
+<% } %>
+
+<section class="detail-section">
+  <h2>Caractéristiques</h2>
+  <dl class="spec-list">
+    <div><dt>Puissance</dt><dd><%= vehicle.puissance_ch %> ch</dd></div>
+    <div><dt>Boîte</dt><dd><%= vehicle.boite %></dd></div>
+    <div><dt>Transmission</dt><dd><%= vehicle.transmission %></dd></div>
+    <div><dt>Kilométrage</dt><dd><%= vehicle.kilometrage.toLocaleString('fr-FR') %> km</dd></div>
+    <div><dt>Places</dt><dd><%= vehicle.places %></dd></div>
+    <div><dt>Portes</dt><dd><%= vehicle.portes %></dd></div>
+    <div><dt>Couleur</dt><dd><%= vehicle.couleur %></dd></div>
+    <div><dt>Crit'Air</dt><dd><%= vehicle.crit_air %></dd></div>
+  </dl>
+</section>
+
+<section class="detail-section">
+  <h2>Équipements</h2>
+  <ul class="equipment-list">
+    <% vehicle.equipements.forEach((equipment) => { %>
+      <li><%= equipment %></li>
+    <% }); %>
+  </ul>
+</section>
+
+<section class="detail-section">
+  <h2>Description</h2>
+  <p><%= vehicle.description %></p>
+</section>
+
+<section class="detail-section" id="reservation">
+  <h2>Demander une réservation</h2>
+  <p>Le formulaire de réservation sera ajouté à une prochaine étape.</p>
+</section>
+<%- include('partials/footer') %>

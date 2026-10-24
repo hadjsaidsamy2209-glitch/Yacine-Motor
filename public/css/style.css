@@ -294,6 +294,133 @@ main {
   text-align: center;
 }
 
+/* Page détail d'un véhicule */
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.detail-header .vehicle-meta {
+  margin-bottom: 0.25rem;
+}
+
+.detail-header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.detail-version {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 1.25rem;
+}
+
+.vehicle-visual-large {
+  aspect-ratio: 21 / 9;
+  margin: 1.5rem 0;
+  border-radius: var(--radius);
+  font-size: 2rem;
+}
+
+.price-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.price-main {
+  margin: 0;
+  color: var(--muted);
+}
+
+.price-main strong {
+  color: var(--text);
+  font-size: 2.5rem;
+  letter-spacing: -0.03em;
+}
+
+.price-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.notice {
+  margin: 1rem 0 0;
+  padding: 1rem 1.25rem;
+  background: #fff4e5;
+  border-radius: var(--radius);
+  color: #5f3b00;
+}
+
+.detail-section {
+  margin-top: 3rem;
+}
+
+.spec-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem 2rem;
+  margin: 0;
+}
+
+.spec-list div {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.spec-list dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.spec-list dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.equipment-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.equipment-list li {
+  padding: 0.35rem 0.9rem;
+  background: #ececf0;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+}
+
+/* Page d'erreur (404, 500) */
+.message-page {
+  padding: 4rem 0;
+}
+
+.message-page p {
+  max-width: 36rem;
+  color: var(--muted);
+  font-size: 1.25rem;
+}
+
 /* Préférences d'accessibilité */
 @media (prefers-reduced-motion: reduce) {
   * {
