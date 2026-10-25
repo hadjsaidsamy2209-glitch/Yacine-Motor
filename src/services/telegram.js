@@ -1,5 +1,7 @@
 const { formatPrice, formatDate } = require('./format');
 const { yearsBetween } = require('./rules');
+const TELEGRAM_TIMEOUT_MS = 8000;
+
 
 function formatReservationMessage(vehicle, request, estimate) {
   const dayWord = estimate.days > 1 ? 'jours' : 'jour';
@@ -28,6 +30,8 @@ function formatReservationMessage(vehicle, request, estimate) {
   return lines.join('\n');
 }
 
+
+
 function formatContactMessage(contact) {
   const lines = ['Nouveau message de contact', `Nom : ${contact.name}`];
 
@@ -42,4 +46,31 @@ function formatContactMessage(contact) {
   return lines.join('\n');
 }
 
-module.exports = { formatReservationMessage, formatContactMessage };
+
+
+async function sendMessage(text, { fetchFn = fetch, env = process.env } = {}) {
+  const url = `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+  let response;
+  try {
+    response = await fetchFn(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: env.TELEGRAM_CHAT_ID, text }),
+      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
+    });
+  } catch (error) {
+    throw new Error(`Telegram injoignable (${error.name})`);
+  }
+
+  const result = await response.json().catch(() => ({}));
+  if (!result.ok) {
+    const code = result.error_code ?? response.status;
+    throw new Error(`Telegram a refusé le message (${code}) : ${result.description ?? 'réponse inattendue'}`);
+  }
+}
+
+
+
+module.exports = { formatReservationMessage, formatContactMessage, sendMessage };
+

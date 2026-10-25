@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { formatReservationMessage, formatContactMessage } = require('../src/services/telegram');
+const { formatReservationMessage, formatContactMessage, sendMessage } = require('../src/services/telegram');
 const { formatPrice } = require('../src/services/format');
 
 const rs3 = {
@@ -59,4 +59,51 @@ test('contact : seul le téléphone est renseigné', () => {
   assert.ok(text.includes('Téléphone : 06 11 22 33 44'));
   assert.ok(!text.includes('Email'));
   assert.ok(text.includes('Message : Bonjour'));
+});
+
+const fakeEnv = { TELEGRAM_BOT_TOKEN: 'SECRET_TOKEN_123', TELEGRAM_CHAT_ID: '42' };
+
+function fakeFetch(answer) {
+  const calls = [];
+  const fn = async (url, options) => {
+    calls.push({ url, options });
+    if (answer instanceof Error) {
+      throw answer;
+    }
+    return { json: async () => answer };
+  };
+  return { fn, calls };
+}
+
+test('envoi : appelle Telegram avec le bon texte et le bon destinataire', async () => {
+  const { fn, calls } = fakeFetch({ ok: true });
+  await sendMessage('Bonjour', { fetchFn: fn, env: fakeEnv });
+  assert.equal(calls.length, 1);
+  assert.ok(calls[0].url.endsWith('/sendMessage'));
+  assert.deepEqual(JSON.parse(calls[0].options.body), { chat_id: '42', text: 'Bonjour' });
+  assert.ok(calls[0].options.signal instanceof AbortSignal);
+});
+
+test('envoi : un refus de Telegram lève une erreur lisible', async () => {
+  const { fn } = fakeFetch({ ok: false, error_code: 401, description: 'Unauthorized' });
+  await assert.rejects(
+    sendMessage('Bonjour', { fetchFn: fn, env: fakeEnv }),
+    (error) => error.message.includes('401') && error.message.includes('Unauthorized'),
+  );
+});
+
+test("envoi : l'erreur ne contient jamais le token", async () => {
+  const { fn } = fakeFetch({ ok: false, error_code: 401, description: 'Unauthorized' });
+  await assert.rejects(
+    sendMessage('Bonjour', { fetchFn: fn, env: fakeEnv }),
+    (error) => !error.message.includes('SECRET_TOKEN_123'),
+  );
+});
+
+test('envoi : un réseau coupé lève une erreur sans le token', async () => {
+  const { fn } = fakeFetch(new TypeError('fetch failed'));
+  await assert.rejects(
+    sendMessage('Bonjour', { fetchFn: fn, env: fakeEnv }),
+    (error) => error.message.includes('injoignable') && !error.message.includes('SECRET_TOKEN_123'),
+  );
 });
