@@ -40,8 +40,8 @@ Chaque décision suit le même format : problème, options, choix, raison. Les p
 ## D6. Prix affiché
 
 - **Problème** : montrer ou non un prix au client.
-- **Choix** : estimation indicative = nombre de jours × `prix_jour`, avec la caution. Nombre de jours = différence entre les dates (du 10 au 12 = 2 jours), minimum 1 (*hypothèse*, convention des loueurs par tranches de 24 h). Le serveur **recalcule** toujours le prix ; celui du navigateur ne sert qu'à l'affichage.
-- **Raison** : le prix est dans les données. Le fichier ne donne ni prix du kilomètre supplémentaire ni remise, d'où le mot « indicatif ».
+- **Choix** : le formulaire affiche « Prix total : X € » (sans détail du calcul), **seulement une fois les deux dates saisies et valides**, grâce à un petit script côté navigateur. Le prix est égal au nombre de jours × `prix_jour`. Nombre de jours = différence entre les dates (du 10 au 12 = 2 jours), minimum 1 (*hypothèse*, convention des loueurs par tranches de 24 h). La caution reste affichée dans le panneau des tarifs de la page. Le serveur **recalcule** toujours le prix : celui du navigateur ne sert qu'à l'affichage, et c'est le prix du serveur qui figure dans le message Telegram. Sans JavaScript, le prix n'apparaît pas avant l'envoi mais figure dans le message reçu par l'agence.
+- **Raison** : le prix est dans les données, et le client le voit tout de suite après avoir choisi ses dates. **Limite** : le fichier ne donne ni prix du kilomètre supplémentaire ni remise ; l'agence confirme le montant définitif à la réponse.
 
 ## D7. Données personnelles
 
