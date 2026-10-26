@@ -1,57 +1,86 @@
-<%- include('partials/header', { title: 'Contact' }) %>
-<h1>Contact</h1>
-<p class="form-intro">Une question avant de réserver ? Écrivez à l'agence, elle vous répond directement.</p>
+<%- include('partials/header', { title: 'Contact', wide: true }) %>
 
-<% if (sendError) { %>
-  <p class="notice notice-error" role="alert">
-    Votre message n'a pas pu être transmis. Réessayez dans un instant.
-  </p>
-<% } %>
+<section class="band band-dark contact-hero">
+  <div class="container hero-center">
+    <p class="eyebrow">Contact</p>
+    <h1>Une question ? Écrivez à l'agence.</h1>
+    <p class="lead">Remplissez le formulaire : votre message arrive directement à l'agence, qui vous répond.</p>
+  </div>
+</section>
 
-<% const messages = Object.values(errors); %>
-<form class="form-card" method="post" action="/contact">
-  <% if (messages.length > 0) { %>
-    <div class="error-summary" role="alert">
-      <p>Veuillez corriger les points suivants :</p>
-      <ul>
-        <% messages.forEach((message) => { %>
-          <li><%= message %></li>
-        <% }); %>
-      </ul>
+<section class="band band-gray">
+  <div class="container contact-grid">
+    <ul class="info-cards">
+      <li>
+        <h2>Vous voulez louer un véhicule ?</h2>
+        <p>Ouvrez la fiche du véhicule et utilisez « Demander une réservation » : vos dates et le prix total s'affichent avant l'envoi.</p>
+        <a class="text-link" href="/vehicules">Voir les véhicules</a>
+      </li>
+      <li>
+        <h2>Une question sur les conditions ?</h2>
+        <p>Chaque fiche indique la caution, les kilomètres inclus, l'âge minimum et l'ancienneté de permis exigés.</p>
+      </li>
+      <li>
+        <h2>Et ensuite ?</h2>
+        <p>Votre message arrive directement à l'agence. Aucun paiement en ligne.</p>
+      </li>
+    </ul>
+
+    <div class="contact-form-col">
+      <% if (sendError) { %>
+        <p class="notice notice-error" role="alert">
+          Votre message n'a pas pu être transmis. Réessayez dans un instant.
+        </p>
+      <% } %>
+
+      <% const messages = Object.values(errors); %>
+      <form class="form-card" method="post" action="/contact">
+        <% if (messages.length > 0) { %>
+          <div class="error-summary" role="alert">
+            <p>Veuillez corriger les points suivants :</p>
+            <ul>
+              <% messages.forEach((message) => { %>
+                <li><%= message %></li>
+              <% }); %>
+            </ul>
+          </div>
+        <% } %>
+
+        <div class="field-row">
+          <%- include('partials/form-field', { name: 'firstName', label: 'Prénom', type: 'text', value: form.firstName, error: errors.firstName, autocomplete: 'given-name' }) %>
+          <%- include('partials/form-field', { name: 'lastName', label: 'Nom', type: 'text', value: form.lastName, error: errors.lastName, autocomplete: 'family-name' }) %>
+        </div>
+
+        <div class="field-row">
+          <%- include('partials/form-field', { name: 'phone', label: 'Téléphone', type: 'tel', value: form.phone, error: errors.phone, autocomplete: 'tel' }) %>
+          <%- include('partials/form-field', { name: 'email', label: 'Email', type: 'email', value: form.email, error: errors.email, autocomplete: 'email' }) %>
+        </div>
+
+        <div class="field">
+          <label for="message">Votre message</label>
+          <textarea id="message" name="message" rows="5" maxlength="1000" required<% if (errors.message) { %> aria-invalid="true" aria-describedby="message-error"<% } %>><%= form.message || '' %></textarea>
+          <% if (errors.message) { %>
+            <p class="field-error" id="message-error"><%= errors.message %></p>
+          <% } %>
+        </div>
+
+        <div class="consent">
+          <input type="checkbox" id="consent" name="consent" required<% if (errors.consent) { %> aria-invalid="true" aria-describedby="consent-error"<% } %>>
+          <label for="consent">J'accepte que mes données soient transmises à l'agence.</label>
+        </div>
+        <% if (errors.consent) { %>
+          <p class="field-error" id="consent-error"><%= errors.consent %></p>
+        <% } %>
+
+        <div class="honeypot" aria-hidden="true">
+          <label for="website">Ne pas remplir ce champ</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button class="button" type="submit">Envoyer le message</button>
+      </form>
     </div>
-  <% } %>
-
-  <div class="field-row">
-    <%- include('partials/form-field', { name: 'firstName', label: 'Prénom', type: 'text', value: form.firstName, error: errors.firstName, autocomplete: 'given-name' }) %>
-    <%- include('partials/form-field', { name: 'lastName', label: 'Nom', type: 'text', value: form.lastName, error: errors.lastName, autocomplete: 'family-name' }) %>
   </div>
+</section>
 
-  <div class="field-row">
-    <%- include('partials/form-field', { name: 'phone', label: 'Téléphone', type: 'tel', value: form.phone, error: errors.phone, autocomplete: 'tel' }) %>
-    <%- include('partials/form-field', { name: 'email', label: 'Email', type: 'email', value: form.email, error: errors.email, autocomplete: 'email' }) %>
-  </div>
-
-  <div class="field">
-    <label for="message">Votre message</label>
-    <textarea id="message" name="message" rows="5" maxlength="1000" required<% if (errors.message) { %> aria-invalid="true" aria-describedby="message-error"<% } %>><%= form.message || '' %></textarea>
-    <% if (errors.message) { %>
-      <p class="field-error" id="message-error"><%= errors.message %></p>
-    <% } %>
-  </div>
-
-  <div class="consent">
-    <input type="checkbox" id="consent" name="consent" required<% if (errors.consent) { %> aria-invalid="true" aria-describedby="consent-error"<% } %>>
-    <label for="consent">J'accepte que mes données soient transmises à l'agence.</label>
-  </div>
-  <% if (errors.consent) { %>
-    <p class="field-error" id="consent-error"><%= errors.consent %></p>
-  <% } %>
-
-  <div class="honeypot" aria-hidden="true">
-    <label for="website">Ne pas remplir ce champ</label>
-    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-  </div>
-
-  <button class="button" type="submit">Envoyer le message</button>
-</form>
 <%- include('partials/footer') %>
