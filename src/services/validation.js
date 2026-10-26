@@ -109,5 +109,41 @@ function validateReservation(form, vehicle, todayIso) {
   return { errors, values };
 }
 
-module.exports = { validateReservation, isValidIsoDate };
+// Formulaire de contact : un nom, un moyen de joindre la personne, un message.
+function validateContact(form) {
+  const values = {
+    name: cleanText(form.name),
+    phone: cleanText(form.phone),
+    email: cleanText(form.email),
+    message: cleanText(form.message),
+  };
+  const errors = {};
+
+  if (!values.name) {
+    errors.name = 'Indiquez votre nom et prénom.';
+  } else if (values.name.length > MAX_NAME_LENGTH) {
+    errors.name = `Votre nom est trop long (${MAX_NAME_LENGTH} caractères maximum).`;
+  }
+  if (!values.phone && !values.email) {
+    errors.contact = "Indiquez un téléphone ou un email pour que l'agence puisse vous répondre.";
+  }
+  if (values.phone && !PHONE_PATTERN.test(values.phone)) {
+    errors.phone = 'Indiquez un numéro de téléphone valide.';
+  }
+  if (values.email && (!EMAIL_PATTERN.test(values.email) || values.email.length > MAX_EMAIL_LENGTH)) {
+    errors.email = 'Indiquez une adresse email valide.';
+  }
+  if (!values.message) {
+    errors.message = 'Écrivez votre message.';
+  } else if (values.message.length > MAX_MESSAGE_LENGTH) {
+    errors.message = `Votre message est trop long (${MAX_MESSAGE_LENGTH} caractères maximum).`;
+  }
+  if (form.consent !== 'on') {
+    errors.consent = "Vous devez accepter que vos données soient transmises à l'agence.";
+  }
+
+  return { errors, values };
+}
+
+module.exports = { validateReservation, validateContact, isValidIsoDate };
 
