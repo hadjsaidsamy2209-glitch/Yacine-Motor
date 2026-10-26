@@ -1,7 +1,73 @@
-<%- include('partials/header', { title: 'Accueil' }) %>
-<section class="hero">
-  <h1><%= agency.nom %></h1>
-  <p>Location de véhicules à <%= agency.ville %>. Choisissez votre véhicule, envoyez votre demande, l'agence vous répond.</p>
-  <a class="button" href="/vehicules">Voir les véhicules</a>
+<%- include('partials/header', { title: 'Accueil', wide: true }) %>
+
+<section class="band band-dark hero-home">
+  <div class="container hero-center">
+    <p class="eyebrow">Location de véhicules à <%= agency.ville %></p>
+    <h1>Louez votre véhicule à <%= agency.ville %>.</h1>
+    <p class="lead">Choisissez un véhicule, envoyez votre demande : l'agence vous répond directement.</p>
+    <div class="hero-actions">
+      <a class="button" href="/vehicules">Voir les véhicules</a>
+      <a class="text-link" href="/contact">Nous contacter</a>
+    </div>
+  </div>
 </section>
+
+<section class="band band-light">
+  <div class="container">
+    <ul class="reassurance">
+      <li>
+        <span class="stat-value">dès <%= formatPrice(lowestPrice) %></span>
+        <p>par jour, avec la caution indiquée sur chaque véhicule</p>
+      </li>
+      <li>
+        <span class="stat-value">0 €</span>
+        <p>de paiement en ligne : l'agence vous répond directement</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band band-dark">
+  <div class="container">
+    <h2>La voiture idéale pour votre prochain trajet à <%= agency.ville %></h2>
+    <ul class="featured-row">
+      <% featured.forEach((vehicle) => { %>
+        <li class="featured-card">
+          <% if (vehicle.image) { %>
+            <img class="featured-photo" src="<%= vehicle.image %>" alt="<%= vehicle.marque %> <%= vehicle.modele %>" width="480" height="170" loading="lazy">
+          <% } %>
+          <p class="featured-category"><%= vehicle.categorie %></p>
+          <h3><%= vehicle.marque %> <%= vehicle.modele %></h3>
+          <p class="featured-version"><%= vehicle.version %></p>
+          <p class="featured-price"><strong><%= formatPrice(vehicle.prix_jour) %></strong> / jour</p>
+          <a class="button button-outline" href="/vehicules/<%= vehicle.slug %>">Voir l'offre</a>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+</section>
+
+<section class="band band-gray">
+  <div class="container">
+    <h2>Comment ça marche</h2>
+    <ol class="steps">
+      <li>
+        <span class="step-number" aria-hidden="true">1</span>
+        <h3>Choisissez</h3>
+        <p>Parcourez les véhicules, leurs tarifs et leurs conditions.</p>
+      </li>
+      <li>
+        <span class="step-number" aria-hidden="true">2</span>
+        <h3>Envoyez votre demande</h3>
+        <p>Indiquez vos dates : le prix total s'affiche avant l'envoi.</p>
+      </li>
+      <li>
+        <span class="step-number" aria-hidden="true">3</span>
+        <h3>L'agence vous répond</h3>
+        <p>Votre demande arrive directement à l'agence, qui vous recontacte.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
 <%- include('partials/footer') %>

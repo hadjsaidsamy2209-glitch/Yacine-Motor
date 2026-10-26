@@ -1,6 +1,6 @@
 const express = require('express');
 const { rateLimit } = require('express-rate-limit');
-const { listVehicles, findBySlug } = require('../services/vehicles');
+const { listVehicles, findBySlug, lowestPrice, featuredVehicles } = require('../services/vehicles');
 const { earliestStart, estimateTotal, todayInParis } = require('../services/rules');
 const { validateReservation, validateContact } = require('../services/validation');
 const { formatReservationMessage, formatContactMessage, sendMessage } = require('../services/telegram');
@@ -37,7 +37,12 @@ function vehiclePage(vehicle, { form = {}, errors = {}, sendError = false } = {}
 }
 
 router.get('/', (request, response) => {
-  response.render('accueil');
+  const list = listVehicles();
+
+  response.render('accueil', {
+    lowestPrice: lowestPrice(list),
+    featured: featuredVehicles(list),
+  });
 });
 
 router.get('/vehicules', (request, response) => {

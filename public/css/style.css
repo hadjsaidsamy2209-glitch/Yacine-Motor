@@ -6,10 +6,14 @@
   --text: #1d1d1f;
   --muted: #6e6e73;
   --line: #d2d2d7;
-  --accent: #0066cc;
-  --accent-dark: #004f9f;
+  --accent: #1d1d1f;
+  --accent-dark: #000000;
   --radius: 0.75rem;
   --content-width: 70rem;
+  --dark: #1d1d1f;
+  --dark-raised: #2c2c2e;
+  --gray-band: #f5f5f7;
+  --on-dark-muted: #a1a1a6;
 }
 
 *,
@@ -81,9 +85,11 @@ textarea:focus-visible {
 
 .logo {
   color: var(--text);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .site-header nav {
@@ -108,26 +114,14 @@ main {
 }
 
 .site-footer {
-  padding: 2rem 1rem;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.875rem;
-  text-align: center;
+  padding: 3.5rem 0 2rem;
+  background: var(--dark);
+  color: var(--on-dark-muted);
+  font-size: 0.9375rem;
 }
 
 .site-footer p {
   margin: 0;
-}
-
-/* Accueil */
-.hero {
-  padding: 3rem 0 2rem;
-}
-
-.hero p {
-  max-width: 36rem;
-  color: var(--muted);
-  font-size: 1.25rem;
 }
 
 /* Bouton : réagit dès l'appui. */
@@ -175,8 +169,7 @@ main {
   height: 100%;
   overflow: hidden;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 1.25rem;
   transition: transform 150ms ease-out, box-shadow 150ms ease-out;
 }
 
@@ -189,8 +182,8 @@ main {
 .vehicle-visual {
   display: grid;
   place-items: center;
-  aspect-ratio: 16 / 9;
-  background: #ececf0;
+  aspect-ratio: 2 / 1;
+  background: #e8e8ed;
   color: var(--muted);
   font-size: 1.5rem;
   font-weight: 700;
@@ -294,70 +287,175 @@ main {
   text-align: center;
 }
 
-/* Page détail d'un véhicule */
+/* Page d'un véhicule : des bandes qui alternent, comme l'accueil. */
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: var(--muted);
+  color: var(--on-dark-muted);
   font-size: 0.9375rem;
   text-decoration: none;
 }
 
 .back-link:hover {
-  color: var(--accent);
+  color: #ffffff;
 }
 
-.detail-header .vehicle-meta {
-  margin-bottom: 0.25rem;
+.vehicle-hero {
+  padding: 2rem 0 4rem;
 }
 
-.detail-header h1 {
-  margin-bottom: 0.25rem;
+.vehicle-hero-grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: end;
+}
+
+.vehicle-hero h1 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
 }
 
 .detail-version {
-  margin: 0 0 1rem;
-  color: var(--muted);
+  margin: 0 0 1.25rem;
+  color: var(--on-dark-muted);
   font-size: 1.25rem;
 }
 
-.vehicle-visual-large {
-  aspect-ratio: 21 / 9;
-  margin: 1.5rem 0;
-  border-radius: var(--radius);
-  font-size: 2rem;
+/* Badges sur fond sombre. */
+.band-dark .badge {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
 }
 
-.price-panel {
+.band-dark .badge-ok {
+  background: rgba(48, 209, 88, 0.2);
+  color: #86e7a3;
+}
+
+.booking-card {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem 2rem;
-  padding: 1.5rem;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1.75rem;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 1.25rem;
+  color: var(--text);
 }
 
-.price-main {
+.booking-price {
   margin: 0;
   color: var(--muted);
 }
 
-.price-main strong {
+.booking-price strong {
   color: var(--text);
-  font-size: 2.5rem;
-  letter-spacing: -0.03em;
+  font-size: 3rem;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
-.price-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.5rem;
+/* Le bouton de la carte reste noir, même dans une bande sombre. */
+.band-dark .booking-card .button:not(.button-outline) {
+  width: 100%;
+  background: var(--accent);
+  color: #ffffff;
+  text-align: center;
+}
+
+.band-dark .booking-card .button:not(.button-outline):hover {
+  background: var(--accent-dark);
+}
+
+.booking-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* Chiffres clés */
+.key-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.key-specs p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+/* Les quatre chiffres clés (chevaux, places, boîte, transmission) partagent la même taille. */
+.key-specs .stat-value {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.1;
+}
+
+/* Photos : cadre fixe (pas de saut de page), image remplie sans déformation. */
+.vehicle-photo-card,
+.featured-photo,
+.vehicle-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.7 / 1;
+  background: #eceef0;
+  object-fit: cover;
+}
+
+.featured-photo {
+  margin-bottom: 0.75rem;
+  border-radius: 0.75rem;
+}
+
+.vehicle-photo {
+  max-width: 36rem;
+  margin: 1.75rem 0 0;
+}
+
+.vehicle-photo img {
+  border-radius: 1.25rem;
+}
+
+.vehicle-photo figcaption {
+  margin-top: 0.5rem;
+  color: var(--on-dark-muted);
+  font-size: 0.8125rem;
+}
+
+/* Conditions de location : des cartes blanches sur fond gris. */
+.condition-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.condition-cards li {
+  padding: 1.5rem;
+  background: var(--surface);
+  border-radius: 1.25rem;
+}
+
+.condition-value {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.condition-cards p {
+  margin: 0;
+  color: var(--muted);
 }
 
 .notice {
@@ -368,10 +466,39 @@ main {
   color: #5f3b00;
 }
 
-.detail-section {
-  margin-top: 3rem;
+.description-lead {
+  max-width: 44rem;
+  margin: 0;
+  font-size: clamp(1.25rem, 2.4vw, 1.625rem);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
 }
 
+.band .container.cta-center > h2 {
+  margin-bottom: 0.75rem;
+}
+
+.cta-center {
+  text-align: center;
+}
+
+.cta-center p {
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-size: 1.125rem;
+}
+
+@media (min-width: 48rem) {
+  .key-specs {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 56rem) {
+  .vehicle-hero-grid {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
 .spec-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
@@ -408,6 +535,11 @@ main {
   background: #ececf0;
   border-radius: 999px;
   font-size: 0.9375rem;
+}
+
+.band-dark .equipment-list li {
+  background: var(--dark-raised);
+  color: #ffffff;
 }
 
 /* Page d'erreur (404, 500) */
@@ -537,14 +669,510 @@ main {
 .price-box {
   margin-bottom: 1.25rem;
   padding: 0.9rem 1.1rem;
-  background: #e8f1fb;
-  border: 1px solid #b6d3f2;
+  background: var(--gray-band);
+  border: 1px solid var(--line);
   border-radius: 0.5rem;
-  color: #0b3a6b;
+  color: var(--text);
 }
 
 .price-box strong {
   font-size: 1.25rem;
+}
+
+/* Accueil : bandes pleine largeur et pied de page sombre */
+.main-wide {
+  width: auto;
+  padding: 0;
+}
+
+.container {
+  width: min(100% - 2rem, var(--content-width));
+  margin: 0 auto;
+}
+
+.band {
+  padding: 4rem 0;
+}
+
+.band-dark {
+  background: var(--dark);
+  color: #ffffff;
+}
+
+.band-gray {
+  background: var(--gray-band);
+}
+
+.band-light {
+  background: var(--surface);
+}
+
+/* Titres de bandes : très grands, en casse normale, tracking négatif et interligne serré. */
+.band .container > h2 {
+  margin-bottom: 2.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.band-dark :focus-visible,
+.site-footer :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* Hero : une seule idée, centrée, sur un fond uni (pas de dégradé). */
+.hero-home {
+  padding: 5rem 0 6rem;
+}
+
+.hero-center {
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  color: var(--on-dark-muted);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.hero-home h1 {
+  max-width: 18ch;
+  margin: 0 auto 1.25rem;
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+.lead {
+  max-width: 34rem;
+  margin: 0 auto 2rem;
+  color: var(--on-dark-muted);
+  font-size: clamp(1.125rem, 2.2vw, 1.375rem);
+  line-height: 1.4;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem 2rem;
+}
+
+.text-link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+/* Sur fond sombre, le bouton principal est blanc. */
+.band-dark .button:not(.button-outline) {
+  background: #ffffff;
+  color: var(--text);
+}
+
+.band-dark .button:not(.button-outline):hover {
+  background: #e8e8ed;
+}
+
+.button-outline {
+  align-self: flex-start;
+  margin-top: 0.75rem;
+  background: transparent;
+  border: 2px solid currentColor;
+  color: #ffffff;
+}
+
+.button-outline:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Trois chiffres : de grands chiffres sobres plutôt que des badges. */
+.reassurance {
+  display: grid;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reassurance li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-value {
+  font-size: clamp(3rem, 8vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.reassurance p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+/* Véhicules à la une : défilement horizontal sans JavaScript, grille sur grand écran. */
+.featured-row {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 0 1rem;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+}
+
+.featured-card {
+  display: flex;
+  flex: 0 0 min(80%, 17rem);
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.5rem;
+  background: var(--dark-raised);
+  border-radius: 1.25rem;
+  scroll-snap-align: start;
+}
+
+.featured-category {
+  margin: 0;
+  color: var(--on-dark-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.featured-card h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.featured-version {
+  margin: 0;
+  color: var(--on-dark-muted);
+  font-size: 0.9375rem;
+}
+
+.featured-price {
+  margin: auto 0 0.5rem;
+  padding-top: 1rem;
+  color: var(--on-dark-muted);
+}
+
+.featured-price strong {
+  color: #ffffff;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+/* Comment ça marche */
+.steps {
+  display: grid;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step-number {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.75rem;
+  background: var(--dark);
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.steps h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+
+.steps p {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Pied de page */
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.footer-brand {
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.site-footer h2 {
+  margin: 0 0 0.75rem;
+  color: #ffffff;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site-footer ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a {
+  color: var(--on-dark-muted);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.site-footer .footer-legal {
+  margin: 2.5rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.8125rem;
+}
+
+/* Très petit écran : le logo mène déjà à l'accueil, on libère de la place dans l'en-tête. */
+@media (max-width: 30rem) {
+  .logo {
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .site-header nav {
+    gap: 1rem;
+  }
+
+  .site-header nav a[href="/"] {
+    display: none;
+  }
+}
+
+/* Écrans plus larges : le style de base est celui du téléphone. */
+@media (min-width: 48rem) {
+  .reassurance {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1.5fr;
+  }
+}
+
+@media (min-width: 60rem) {
+  .featured-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    overflow: visible;
+  }
+
+  .featured-card {
+    flex: none;
+  }
+}
+
+/* Catalogue : fond gris, cartes blanches, bouton secondaire. */
+.catalogue-band {
+  padding: 3rem 0 5rem;
+}
+
+.catalogue-band h1 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+/* Fenêtre de réservation : un <dialog> natif posé sur la page (focus piégé, Échap pour fermer). */
+.reservation-dialog {
+  width: min(100% - 2rem, 40rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: 0;
+  border-radius: 1.25rem;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
+  color: var(--text);
+}
+
+.reservation-dialog[open] {
+  animation: dialog-in 180ms ease-out;
+}
+
+.reservation-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dialog-panel {
+  max-height: calc(100dvh - 2rem);
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dialog-header h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+  letter-spacing: -0.03em;
+}
+
+.dialog-header .form-intro {
+  margin: 0;
+}
+
+.dialog-close {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: var(--gray-band);
+  border: 0;
+  border-radius: 50%;
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 100ms ease-out;
+}
+
+.dialog-close:hover {
+  background: #e8e8ed;
+}
+
+/* Dans la fenêtre, le formulaire n'a pas besoin d'une seconde carte. */
+.reservation-dialog .form-card {
+  max-width: none;
+  margin-top: 1.25rem;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Le fond de la page ne défile pas pendant que la fenêtre est ouverte. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reservation-dialog[open] {
+    animation: none;
+  }
+}
+
+/* Page Contact : en-tête sombre, trois cartes d'orientation et le formulaire dans une grande carte. */
+.contact-hero {
+  padding: 4rem 0 4.5rem;
+}
+
+.contact-hero h1 {
+  max-width: 20ch;
+  margin: 0 auto 1.25rem;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+
+.contact-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Sur téléphone, l'action principale (le formulaire) passe avant les explications. */
+.contact-form-col {
+  order: -1;
+}
+
+.info-cards {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.info-cards li {
+  padding: 1.5rem;
+  background: var(--surface);
+  border-radius: 1.25rem;
+}
+
+.info-cards h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.info-cards p {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+}
+
+.info-cards p:last-child {
+  margin-bottom: 0;
+}
+
+.contact-form-col .form-card {
+  max-width: none;
+  margin: 0;
+  padding: 2rem;
+  border: 0;
+  border-radius: 1.25rem;
+}
+
+@media (min-width: 56rem) {
+  .contact-grid {
+    grid-template-columns: 1fr 1.3fr;
+  }
+
+  .contact-form-col {
+    order: 0;
+  }
 }
 
 /* Préférences d'accessibilité */

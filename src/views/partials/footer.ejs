@@ -1,6 +1,30 @@
   </main>
   <footer class="site-footer">
-    <p><%= agency.nom %> · <%= agency.ville %></p>
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand"><%= agency.nom %></p>
+        <p>Location de véhicules à <%= agency.ville %>.</p>
+      </div>
+
+      <nav aria-label="Pied de page">
+        <h2>Navigation</h2>
+        <ul>
+          <li><a href="/">Accueil</a></li>
+          <li><a href="/vehicules">Véhicules</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h2>Bon à savoir</h2>
+        <ul>
+          <li>Demande en ligne, aucun paiement en ligne.</li>
+          <li>L'agence vous répond directement.</li>
+          <li><a href="/contact">Nous écrire</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="container footer-legal">© <%= new Date().getFullYear() %> <%= agency.nom %></p>
   </footer>
 </body>
 </html>
