@@ -1,10 +1,28 @@
 const express = require('express');
+const { rateLimit } = require('express-rate-limit');
 const { listVehicles, findBySlug } = require('../services/vehicles');
 const { earliestStart, estimateTotal, todayInParis } = require('../services/rules');
 const { validateReservation, validateContact } = require('../services/validation');
 const { formatReservationMessage, formatContactMessage, sendMessage } = require('../services/telegram');
 
 const router = express.Router();
+
+// Anti-spam : au plus 10 envois de formulaire par adresse IP et par quart d'heure (DECISIONS.md, D8).
+const FORM_WINDOW_MS = 15 * 60 * 1000;
+const FORM_MAX_SUBMISSIONS = 10;
+
+const formLimiter = rateLimit({
+  windowMs: FORM_WINDOW_MS,
+  limit: FORM_MAX_SUBMISSIONS,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (request, response) => {
+    response.status(429).render('erreur', {
+      title: 'Trop de tentatives',
+      message: 'Vous avez envoyé trop de demandes en peu de temps. Réessayez dans quelques minutes.',
+    });
+  },
+});
 
 function notFound(response) {
   return response.status(404).render('erreur', {
@@ -36,7 +54,7 @@ router.get('/vehicules/:slug', (request, response) => {
   response.render('vehicule', vehiclePage(vehicle));
 });
 
-router.post('/vehicules/:slug', async (request, response) => {
+router.post('/vehicules/:slug', formLimiter, async (request, response) => {
   const vehicle = findBySlug(request.params.slug);
   const form = request.body ?? {};
 
@@ -70,7 +88,7 @@ router.get('/contact', (request, response) => {
   response.render('contact', { form: {}, errors: {}, sendError: false });
 });
 
-router.post('/contact', async (request, response) => {
+router.post('/contact', formLimiter, async (request, response) => {
   const form = request.body ?? {};
 
   // Champ piège : seul un robot le remplit.
