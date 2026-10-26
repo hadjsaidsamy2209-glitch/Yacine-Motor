@@ -50,6 +50,10 @@ function driverProblems(vehicle, driver, startIso) {
   return problems;
 }
 
+// Date du jour en heure de Paris, au format AAAA-MM-JJ (le format "en-CA" s'écrit déjà ainsi).
+function todayInParis() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
+}
 
-module.exports = { daysBetween, addDays, yearsBetween, estimateTotal, earliestStart, driverProblems };
+module.exports = { daysBetween, addDays, yearsBetween, estimateTotal, earliestStart, driverProblems, todayInParis };
 

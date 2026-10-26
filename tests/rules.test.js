@@ -1,7 +1,11 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { daysBetween, addDays, yearsBetween, estimateTotal, earliestStart, driverProblems } = require('../src/services/rules');
+const { daysBetween, addDays, yearsBetween, estimateTotal, earliestStart, driverProblems, todayInParis } = require('../src/services/rules');
 const sportsCar = { age_minimum: 25, permis_minimum_annees: 5 };
+
+test("la date du jour en heure de Paris s'écrit AAAA-MM-JJ", () => {
+  assert.match(todayInParis(), /^\d{4}-\d{2}-\d{2}$/);
+});
 
 test('du 10 au 12 novembre, il y a 2 jours', () => {
     assert.equal(daysBetween('2026-11-10', '2026-11-12'),2);
