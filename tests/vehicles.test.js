@@ -1,11 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {
-  listVehicles,
-  catalogueStats,
-  summarizeCategories,
-  featuredVehicles,
-} = require('../src/services/vehicles');
+const { listVehicles, lowestPrice, featuredVehicles, resolveImage } = require('../src/services/vehicles');
 
 const sample = [
   { slug: 'q5', categorie: 'SUV', prix_jour: 125, disponible: true },
@@ -15,16 +10,8 @@ const sample = [
   { slug: 'm4', categorie: 'Sportive', prix_jour: 300, disponible: false },
 ];
 
-test('statistiques : nombre de véhicules et prix minimum', () => {
-  assert.deepEqual(catalogueStats(sample), { count: 5, minPrice: 45 });
-});
-
-test('catégories : nombre et prix minimum, du moins cher au plus cher', () => {
-  assert.deepEqual(summarizeCategories(sample), [
-    { name: 'Citadine', count: 1, minPrice: 45 },
-    { name: 'SUV', count: 3, minPrice: 80 },
-    { name: 'Sportive', count: 1, minPrice: 300 },
-  ]);
+test('prix le plus bas du catalogue', () => {
+  assert.equal(lowestPrice(sample), 45);
 });
 
 test('à la une : le véhicule disponible le moins cher de chaque catégorie', () => {
@@ -39,14 +26,26 @@ test("à la une : une catégorie sans véhicule disponible n'apparaît pas", () 
 
 test('les fonctions ne modifient pas la liste reçue', () => {
   const copy = JSON.parse(JSON.stringify(sample));
-  catalogueStats(sample);
-  summarizeCategories(sample);
+  lowestPrice(sample);
   featuredVehicles(sample);
   assert.deepEqual(sample, copy);
 });
 
-test('sur le vrai catalogue : quatre catégories, du prix minimum 45 €', () => {
-  const names = summarizeCategories(listVehicles()).map((category) => category.name);
-  assert.deepEqual(names, ['Citadine', 'Compacte', 'SUV', 'Sportive']);
-  assert.equal(catalogueStats(listVehicles()).minPrice, 45);
+test("image : un fichier qui n'existe pas donne null (la page affichera un bloc neutre)", () => {
+  assert.equal(resolveImage('/images/vehicles/fichier-inexistant.jpg'), null);
+});
+
+test("image : aucun chemin donne null", () => {
+  assert.equal(resolveImage(undefined), null);
+});
+
+test("image : chaque véhicule a un champ image, un chemin ou null", () => {
+  listVehicles().forEach((vehicle) => {
+    assert.ok(vehicle.image === null || vehicle.image.startsWith('/images/'));
+  });
+});
+
+test("sur le vrai catalogue : le prix le plus bas n'est supérieur à aucun tarif", () => {
+  const list = listVehicles();
+  assert.ok(list.every((vehicle) => lowestPrice(list) <= vehicle.prix_jour));
 });

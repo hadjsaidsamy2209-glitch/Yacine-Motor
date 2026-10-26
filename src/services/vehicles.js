@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const CATALOGUE_FILE = path.join(__dirname, '..', '..', 'data', 'vehicles.json');
+const PUBLIC_DIR = path.join(__dirname, '..', '..', 'public');
 
 function loadCatalogue() {
     try {
@@ -11,9 +12,17 @@ function loadCatalogue() {
     }
 }
 
+// Le chemin d'image du JSON, seulement si le fichier existe vraiment : sinon null, et la page affiche un bloc neutre.
+function resolveImage(imagePath) {
+  return imagePath && fs.existsSync(path.join(PUBLIC_DIR, imagePath)) ? imagePath : null;
+}
+
 const catalogue = loadCatalogue();
 const agency = catalogue.agence;
-const vehicles = catalogue.vehicules;
+const vehicles = catalogue.vehicules.map((vehicle) => ({
+  ...vehicle,
+  image: resolveImage(vehicle.images?.[0]),
+}));
 
 function listVehicles() {
   return vehicles;
@@ -23,25 +32,9 @@ function findBySlug(slug) {
   return vehicles.find((vehicle) => vehicle.slug === slug);
 }
 
-// Le nombre de véhicules et le prix journalier le plus bas, pour l'accueil.
-function catalogueStats(list) {
-  return { count: list.length, minPrice: Math.min(...list.map((vehicle) => vehicle.prix_jour)) };
-}
-
-// Par catégorie : nombre de véhicules et prix minimum, de la moins chère à la plus chère.
-function summarizeCategories(list) {
-  const byCategory = new Map();
-
-  list.forEach((vehicle) => {
-    const current = byCategory.get(vehicle.categorie);
-    byCategory.set(vehicle.categorie, {
-      name: vehicle.categorie,
-      count: (current?.count ?? 0) + 1,
-      minPrice: Math.min(current?.minPrice ?? Infinity, vehicle.prix_jour),
-    });
-  });
-
-  return [...byCategory.values()].sort((a, b) => a.minPrice - b.minPrice);
+// Le prix journalier le plus bas du catalogue, pour l'accueil.
+function lowestPrice(list) {
+  return Math.min(...list.map((vehicle) => vehicle.prix_jour));
 }
 
 // Pour chaque catégorie, le véhicule disponible le moins cher.
@@ -60,5 +53,5 @@ function featuredVehicles(list) {
   return [...cheapest.values()].sort((a, b) => a.prix_jour - b.prix_jour);
 }
 
-module.exports = { agency, listVehicles, findBySlug, catalogueStats, summarizeCategories, featuredVehicles };
+module.exports = { agency, listVehicles, findBySlug, lowestPrice, featuredVehicles, resolveImage };
 
