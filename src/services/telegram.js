@@ -33,17 +33,13 @@ function formatReservationMessage(vehicle, request, estimate) {
 
 
 function formatContactMessage(contact) {
-  const lines = ['Nouveau message de contact', `Nom : ${contact.name}`];
-
-  if (contact.phone) {
-    lines.push(`Téléphone : ${contact.phone}`);
-  }
-  if (contact.email) {
-    lines.push(`Email : ${contact.email}`);
-  }
-  lines.push(`Message : ${contact.message}`);
-
-  return lines.join('\n');
+  return [
+    'Nouveau message de contact',
+    `Nom : ${contact.firstName} ${contact.lastName}`,
+    `Téléphone : ${contact.phone}`,
+    `Email : ${contact.email}`,
+    `Message : ${contact.message}`,
+  ].join('\n');
 }
 
 

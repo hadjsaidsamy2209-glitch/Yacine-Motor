@@ -109,28 +109,39 @@ function validateReservation(form, vehicle, todayIso) {
   return { errors, values };
 }
 
-// Formulaire de contact : un nom, un moyen de joindre la personne, un message.
+function nameError(value, label) {
+  if (!value) {
+    return `Indiquez votre ${label}.`;
+  }
+  if (value.length > MAX_NAME_LENGTH) {
+    return `Votre ${label} est trop long (${MAX_NAME_LENGTH} caractères maximum).`;
+  }
+  return null;
+}
+
+// Formulaire de contact : prénom, nom, téléphone, email et message, tous obligatoires.
 function validateContact(form) {
   const values = {
-    name: cleanText(form.name),
+    firstName: cleanText(form.firstName),
+    lastName: cleanText(form.lastName),
     phone: cleanText(form.phone),
     email: cleanText(form.email),
     message: cleanText(form.message),
   };
   const errors = {};
 
-  if (!values.name) {
-    errors.name = 'Indiquez votre nom et prénom.';
-  } else if (values.name.length > MAX_NAME_LENGTH) {
-    errors.name = `Votre nom est trop long (${MAX_NAME_LENGTH} caractères maximum).`;
+  const firstNameProblem = nameError(values.firstName, 'prénom');
+  if (firstNameProblem) {
+    errors.firstName = firstNameProblem;
   }
-  if (!values.phone && !values.email) {
-    errors.contact = "Indiquez un téléphone ou un email pour que l'agence puisse vous répondre.";
+  const lastNameProblem = nameError(values.lastName, 'nom');
+  if (lastNameProblem) {
+    errors.lastName = lastNameProblem;
   }
-  if (values.phone && !PHONE_PATTERN.test(values.phone)) {
+  if (!PHONE_PATTERN.test(values.phone)) {
     errors.phone = 'Indiquez un numéro de téléphone valide.';
   }
-  if (values.email && (!EMAIL_PATTERN.test(values.email) || values.email.length > MAX_EMAIL_LENGTH)) {
+  if (!EMAIL_PATTERN.test(values.email) || values.email.length > MAX_EMAIL_LENGTH) {
     errors.email = 'Indiquez une adresse email valide.';
   }
   if (!values.message) {

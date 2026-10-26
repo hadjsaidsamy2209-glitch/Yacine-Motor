@@ -5,40 +5,46 @@ const { validateReservation, validateContact } = require('../src/services/valida
 const TODAY = '2026-10-25';
 
 const validContact = {
-  name: 'Léa Martin',
+  firstName: 'Léa',
+  lastName: 'Martin',
   phone: '06 11 22 33 44',
-  email: '',
+  email: 'lea@example.com',
   message: 'Bonjour, avez-vous des véhicules pour décembre ?',
   consent: 'on',
 };
 
-test('contact : un message avec un téléphone seul est accepté', () => {
+test('contact : un message complet est accepté', () => {
   assert.deepEqual(validateContact(validContact).errors, {});
 });
 
-test('contact : un message avec un email seul est accepté', () => {
-  const form = { ...validContact, phone: '', email: 'lea@example.com' };
-  assert.deepEqual(validateContact(form).errors, {});
+test('contact : le téléphone est obligatoire', () => {
+  const { errors } = validateContact({ ...validContact, phone: '' });
+  assert.ok(errors.phone);
 });
 
-test('contact : sans téléphone ni email, impossible de répondre', () => {
-  const { errors } = validateContact({ ...validContact, phone: '', email: '' });
-  assert.ok(errors.contact);
+test("contact : l'email est obligatoire", () => {
+  const { errors } = validateContact({ ...validContact, email: '' });
+  assert.ok(errors.email);
 });
 
-test('contact : un email renseigné doit être valide', () => {
+test('contact : un email invalide est refusé', () => {
   const { errors } = validateContact({ ...validContact, email: 'lea@' });
   assert.ok(errors.email);
 });
 
-test('contact : un téléphone renseigné doit être valide', () => {
+test('contact : un téléphone invalide est refusé', () => {
   const { errors } = validateContact({ ...validContact, phone: 'abc' });
   assert.ok(errors.phone);
 });
 
+test('contact : le prénom est obligatoire', () => {
+  const { errors } = validateContact({ ...validContact, firstName: '   ' });
+  assert.ok(errors.firstName);
+});
+
 test('contact : le nom est obligatoire', () => {
-  const { errors } = validateContact({ ...validContact, name: '   ' });
-  assert.ok(errors.name);
+  const { errors } = validateContact({ ...validContact, lastName: '' });
+  assert.ok(errors.lastName);
 });
 
 test('contact : le message est obligatoire', () => {
@@ -57,8 +63,8 @@ test('contact : sans consentement, le message est refusé', () => {
 });
 
 test('contact : les espaces autour des valeurs sont retirés', () => {
-  const { values } = validateContact({ ...validContact, name: '  Léa Martin  ' });
-  assert.equal(values.name, 'Léa Martin');
+  const { values } = validateContact({ ...validContact, firstName: '  Léa  ' });
+  assert.equal(values.firstName, 'Léa');
 });
 
 const clio = { prix_jour: 45, disponible: true };

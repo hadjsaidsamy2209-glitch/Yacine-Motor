@@ -53,11 +53,18 @@ test('réservation : sans condition ni message, ces lignes sont absentes', () =>
   assert.ok(!text.includes('Message'));
 });
 
-test('contact : seul le téléphone est renseigné', () => {
-  const text = formatContactMessage({ name: 'Léa', phone: '06 11 22 33 44', email: '', message: 'Bonjour' });
+test('contact : contient le nom complet, le téléphone, l\'email et le message', () => {
+  const text = formatContactMessage({
+    firstName: 'Léa',
+    lastName: 'Martin',
+    phone: '06 11 22 33 44',
+    email: 'lea@example.com',
+    message: 'Bonjour',
+  });
   assert.ok(text.includes('Nouveau message de contact'));
+  assert.ok(text.includes('Nom : Léa Martin'));
   assert.ok(text.includes('Téléphone : 06 11 22 33 44'));
-  assert.ok(!text.includes('Email'));
+  assert.ok(text.includes('Email : lea@example.com'));
   assert.ok(text.includes('Message : Bonjour'));
 });
 
