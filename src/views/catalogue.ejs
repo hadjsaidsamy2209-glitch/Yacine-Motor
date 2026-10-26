@@ -1,12 +1,18 @@
-<%- include('partials/header', { title: 'Véhicules' }) %>
+<%- include('partials/header', { title: 'Véhicules', wide: true }) %>
+<section class="band band-gray catalogue-band">
+<div class="container">
 <h1>Nos véhicules</h1>
-<p class="page-intro"><%= vehicles.length %> véhicules à louer à <%= agency.ville %>.</p>
+<p class="page-intro">Les véhicules de l'agence, à <%= agency.ville %>. Ouvrez une fiche pour voir ses conditions et envoyer votre demande.</p>
 
 <ul class="vehicle-grid">
   <% vehicles.forEach((vehicle) => { %>
     <li>
       <article class="vehicle-card">
-        <div class="vehicle-visual"><%= vehicle.categorie %></div>
+        <% if (vehicle.image) { %>
+          <img class="vehicle-photo-card" src="<%= vehicle.image %>" alt="<%= vehicle.marque %> <%= vehicle.modele %>" width="480" height="170" loading="lazy">
+        <% } else { %>
+          <div class="vehicle-visual"><%= vehicle.categorie %></div>
+        <% } %>
         <div class="vehicle-body">
           <p class="vehicle-meta"><%= vehicle.annee %> · <%= vehicle.carburant %></p>
           <h2><a href="/vehicules/<%= vehicle.slug %>"><%= vehicle.marque %> <%= vehicle.modele %></a></h2>
@@ -30,10 +36,11 @@
           </div>
 
           <p class="vehicle-price"><strong><%= formatPrice(vehicle.prix_jour) %></strong> / jour</p>
-          <a class="button" href="/vehicules/<%= vehicle.slug %>#reservation">Demander une réservation</a>
         </div>
       </article>
     </li>
   <% }); %>
 </ul>
+</div>
+</section>
 <%- include('partials/footer') %>
