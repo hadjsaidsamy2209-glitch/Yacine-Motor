@@ -1,0 +1,18 @@
+<div class="field">
+  <label for="<%= name %>"><%= label %></label>
+  <input
+    id="<%= name %>"
+    name="<%= name %>"
+    type="<%= type %>"
+    value="<%= locals.value || '' %>"
+    required
+    <% if (locals.autocomplete) { %>autocomplete="<%= autocomplete %>"<% } %>
+    <% if (locals.min) { %>min="<%= min %>"<% } %>
+    <% if (locals.error) { %>aria-invalid="true" aria-describedby="<%= name %>-error"<% } else if (locals.hint) { %>aria-describedby="<%= name %>-hint"<% } %>
+  >
+  <% if (locals.error) { %>
+    <p class="field-error" id="<%= name %>-error"><%= error %></p>
+  <% } else if (locals.hint) { %>
+    <p class="field-hint" id="<%= name %>-hint"><%= hint %></p>
+  <% } %>
+</div>

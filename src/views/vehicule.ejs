@@ -64,6 +64,78 @@
 
 <section class="detail-section" id="reservation">
   <h2>Demander une réservation</h2>
-  <p>Le formulaire de réservation sera ajouté à une prochaine étape.</p>
+  <p class="form-intro">L'agence vous répond directement. Aucun paiement en ligne.</p>
+
+  <% if (sendError) { %>
+    <p class="notice notice-error" role="alert">
+      Votre demande n'a pas pu être transmise. Réessayez dans un instant ou contactez directement l'agence.
+    </p>
+  <% } %>
+
+  <% if (!minStart) { %>
+    <p class="notice">Ce véhicule n'est pas réservable pour le moment.</p>
+  <% } else { %>
+    <% const hasConditions = Boolean(vehicle.age_minimum || vehicle.permis_minimum_annees); %>
+    <% const messages = Object.values(errors); %>
+    <form class="form-card" method="post" action="/vehicules/<%= vehicle.slug %>#reservation" data-price-per-day="<%= vehicle.prix_jour %>">
+      <% if (messages.length > 0) { %>
+        <div class="error-summary" role="alert">
+          <p>Veuillez corriger les points suivants :</p>
+          <ul>
+            <% messages.forEach((message) => { %>
+              <li><%= message %></li>
+            <% }); %>
+          </ul>
+        </div>
+      <% } %>
+
+      <%- include('partials/form-field', { name: 'name', label: 'Nom et prénom', type: 'text', value: form.name, error: errors.name, autocomplete: 'name' }) %>
+
+      <div class="field-row">
+        <%- include('partials/form-field', { name: 'phone', label: 'Téléphone', type: 'tel', value: form.phone, error: errors.phone, autocomplete: 'tel' }) %>
+        <%- include('partials/form-field', { name: 'email', label: 'Email', type: 'email', value: form.email, error: errors.email, autocomplete: 'email' }) %>
+      </div>
+
+      <div class="field-row">
+        <%- include('partials/form-field', { name: 'startDate', label: 'Date de début', type: 'date', value: form.startDate, error: errors.startDate, min: minStart }) %>
+        <%- include('partials/form-field', { name: 'endDate', label: 'Date de fin', type: 'date', value: form.endDate, error: errors.endDate, min: minStart }) %>
+      </div>
+
+      <% if (hasConditions) { %>
+        <div class="field-row">
+          <%- include('partials/form-field', { name: 'birthDate', label: 'Date de naissance', type: 'date', value: form.birthDate, error: errors.birthDate, hint: vehicle.age_minimum + ' ans minimum' }) %>
+          <%- include('partials/form-field', { name: 'licenseDate', label: "Date d'obtention du permis", type: 'date', value: form.licenseDate, error: errors.licenseDate, hint: vehicle.permis_minimum_annees + ' ans de permis minimum' }) %>
+        </div>
+      <% } %>
+
+      <div class="field">
+        <label for="message">Message (facultatif)</label>
+        <textarea id="message" name="message" rows="4" maxlength="1000"<% if (errors.message) { %> aria-invalid="true" aria-describedby="message-error"<% } %>><%= form.message || '' %></textarea>
+        <% if (errors.message) { %>
+          <p class="field-error" id="message-error"><%= errors.message %></p>
+        <% } %>
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="consent" name="consent" required<% if (errors.consent) { %> aria-invalid="true" aria-describedby="consent-error"<% } %>>
+        <label for="consent">J'accepte que mes données soient transmises à l'agence.</label>
+      </div>
+      <% if (errors.consent) { %>
+        <p class="field-error" id="consent-error"><%= errors.consent %></p>
+      <% } %>
+
+      <div class="honeypot" aria-hidden="true">
+        <label for="website">Ne pas remplir ce champ</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="price-box" id="price-box" hidden aria-live="polite">
+        Prix total : <strong id="price-total"></strong>
+      </div>
+
+      <button class="button" type="submit">Envoyer la demande</button>
+    </form>
+  <% } %>
 </section>
+<script src="/js/price.js" defer></script>
 <%- include('partials/footer') %>
