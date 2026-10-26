@@ -1,8 +1,8 @@
 const express = require('express');
 const { listVehicles, findBySlug } = require('../services/vehicles');
 const { earliestStart, estimateTotal, todayInParis } = require('../services/rules');
-const { validateReservation } = require('../services/validation');
-const { formatReservationMessage, sendMessage } = require('../services/telegram');
+const { validateReservation, validateContact } = require('../services/validation');
+const { formatReservationMessage, formatContactMessage, sendMessage } = require('../services/telegram');
 
 const router = express.Router();
 
@@ -61,6 +61,33 @@ router.post('/vehicules/:slug', async (request, response) => {
 
     console.error(`[telegram] ${error.message}`);
     return response.status(502).render('vehicule', vehiclePage(vehicle, { form: values, sendError: true }));
+  }
+
+  response.redirect('/merci');
+});
+
+router.get('/contact', (request, response) => {
+  response.render('contact', { form: {}, errors: {}, sendError: false });
+});
+
+router.post('/contact', async (request, response) => {
+  const form = request.body ?? {};
+
+  // Champ piège : seul un robot le remplit.
+  if (form.website) {
+    return response.redirect('/merci');
+  }
+
+  const { errors, values } = validateContact(form);
+  if (Object.keys(errors).length > 0) {
+    return response.status(400).render('contact', { form: values, errors, sendError: false });
+  }
+
+  try {
+    await sendMessage(formatContactMessage(values));
+  } catch (error) {
+    console.error(`[telegram] ${error.message}`);
+    return response.status(502).render('contact', { form: values, errors: {}, sendError: true });
   }
 
   response.redirect('/merci');
