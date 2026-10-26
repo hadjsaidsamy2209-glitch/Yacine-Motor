@@ -89,7 +89,10 @@
         </div>
       <% } %>
 
-      <%- include('partials/form-field', { name: 'name', label: 'Nom et prénom', type: 'text', value: form.name, error: errors.name, autocomplete: 'name' }) %>
+      <div class="field-row">
+        <%- include('partials/form-field', { name: 'firstName', label: 'Prénom', type: 'text', value: form.firstName, error: errors.firstName, autocomplete: 'given-name' }) %>
+        <%- include('partials/form-field', { name: 'lastName', label: 'Nom', type: 'text', value: form.lastName, error: errors.lastName, autocomplete: 'family-name' }) %>
+      </div>
 
       <div class="field-row">
         <%- include('partials/form-field', { name: 'phone', label: 'Téléphone', type: 'tel', value: form.phone, error: errors.phone, autocomplete: 'tel' }) %>

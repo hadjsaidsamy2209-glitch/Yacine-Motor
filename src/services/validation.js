@@ -17,13 +17,8 @@ function isValidIsoDate(value) {
 }
 
 function identityErrors(values) {
-  const errors = {};
+  const errors = nameErrors(values);
 
-  if (!values.name) {
-    errors.name = 'Indiquez votre nom et prénom.';
-  } else if (values.name.length > MAX_NAME_LENGTH) {
-    errors.name = `Votre nom est trop long (${MAX_NAME_LENGTH} caractères maximum).`;
-  }
   if (!PHONE_PATTERN.test(values.phone)) {
     errors.phone = 'Indiquez un numéro de téléphone valide.';
   }
@@ -74,7 +69,8 @@ function driverInfoErrors(values, vehicle) {
 
 function validateReservation(form, vehicle, todayIso) {
   const values = {
-    name: cleanText(form.name),
+    firstName: cleanText(form.firstName),
+    lastName: cleanText(form.lastName),
     phone: cleanText(form.phone),
     email: cleanText(form.email),
     startDate: cleanText(form.startDate),
@@ -119,15 +115,8 @@ function nameError(value, label) {
   return null;
 }
 
-// Formulaire de contact : prénom, nom, téléphone, email et message, tous obligatoires.
-function validateContact(form) {
-  const values = {
-    firstName: cleanText(form.firstName),
-    lastName: cleanText(form.lastName),
-    phone: cleanText(form.phone),
-    email: cleanText(form.email),
-    message: cleanText(form.message),
-  };
+// Les erreurs du prénom et du nom, communes à la réservation et au contact.
+function nameErrors(values) {
   const errors = {};
 
   const firstNameProblem = nameError(values.firstName, 'prénom');
@@ -138,6 +127,21 @@ function validateContact(form) {
   if (lastNameProblem) {
     errors.lastName = lastNameProblem;
   }
+
+  return errors;
+}
+
+// Formulaire de contact : prénom, nom, téléphone, email et message, tous obligatoires.
+function validateContact(form) {
+  const values = {
+    firstName: cleanText(form.firstName),
+    lastName: cleanText(form.lastName),
+    phone: cleanText(form.phone),
+    email: cleanText(form.email),
+    message: cleanText(form.message),
+  };
+  const errors = nameErrors(values);
+
   if (!PHONE_PATTERN.test(values.phone)) {
     errors.phone = 'Indiquez un numéro de téléphone valide.';
   }

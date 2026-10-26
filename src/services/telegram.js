@@ -10,7 +10,8 @@ function formatReservationMessage(vehicle, request, estimate) {
     `Véhicule : ${vehicle.marque} ${vehicle.modele} (${vehicle.version})`,
     `Dates : du ${formatDate(request.startDate)} au ${formatDate(request.endDate)} (${estimate.days} ${dayWord})`,
     `Prix total : ${formatPrice(estimate.total)} | Caution : ${formatPrice(vehicle.caution)}`,
-    `Client : ${request.name}`,
+    `Nom : ${request.lastName}`,
+    `Prénom : ${request.firstName}`,
     `Téléphone : ${request.phone}`,
     `Email : ${request.email}`,
   ];
@@ -35,7 +36,8 @@ function formatReservationMessage(vehicle, request, estimate) {
 function formatContactMessage(contact) {
   return [
     'Nouveau message de contact',
-    `Nom : ${contact.firstName} ${contact.lastName}`,
+    `Nom : ${contact.lastName}`,
+    `Prénom : ${contact.firstName}`,
     `Téléphone : ${contact.phone}`,
     `Email : ${contact.email}`,
     `Message : ${contact.message}`,

@@ -14,7 +14,8 @@ const rs3 = {
 const clio = { marque: 'Renault', modele: 'Clio', version: 'TCe 90 Evolution', caution: 800 };
 
 const request = {
-  name: 'Jean Dupont',
+  firstName: 'Jean',
+  lastName: 'Dupont',
   phone: '06 00 00 00 00',
   email: 'jean@example.com',
   startDate: '2026-11-10',
@@ -29,7 +30,8 @@ test('réservation : contient le véhicule, les dates et le client', () => {
   assert.ok(text.includes('Nouvelle demande de réservation'));
   assert.ok(text.includes('Véhicule : Audi RS 3 Sportback (2.5 TFSI quattro S tronic)'));
   assert.ok(text.includes('Dates : du 10/11/2026 au 12/11/2026 (2 jours)'));
-  assert.ok(text.includes('Client : Jean Dupont'));
+  assert.ok(text.includes('Nom : Dupont'));
+  assert.ok(text.includes('Prénom : Jean'));
   assert.ok(text.includes('Message : Je souhaite récupérer le véhicule le matin.'));
 });
 
@@ -62,7 +64,8 @@ test('contact : contient le nom complet, le téléphone, l\'email et le message'
     message: 'Bonjour',
   });
   assert.ok(text.includes('Nouveau message de contact'));
-  assert.ok(text.includes('Nom : Léa Martin'));
+  assert.ok(text.includes('Nom : Martin'));
+  assert.ok(text.includes('Prénom : Léa'));
   assert.ok(text.includes('Téléphone : 06 11 22 33 44'));
   assert.ok(text.includes('Email : lea@example.com'));
   assert.ok(text.includes('Message : Bonjour'));

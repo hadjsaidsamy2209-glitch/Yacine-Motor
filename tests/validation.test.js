@@ -73,7 +73,8 @@ const x3 = { prix_jour: 125, disponible: false, indisponible_jusqu_au: '2026-11-
 const unavailable = { prix_jour: 100, disponible: false };
 
 const validForm = {
-  name: 'Jean Dupont',
+  firstName: 'Jean',
+  lastName: 'Dupont',
   phone: '06 00 00 00 00',
   email: 'jean@example.com',
   startDate: '2026-11-10',
@@ -90,15 +91,15 @@ test('un formulaire correct ne produit aucune erreur', () => {
 });
 
 test('les espaces autour des valeurs sont retirés', () => {
-  const form = { ...validForm, name: '  Jean Dupont  ', email: ' jean@example.com ' };
+  const form = { ...validForm, firstName: '  Jean  ', email: ' jean@example.com ' };
   const { values } = validateReservation(form, clio, TODAY);
-  assert.equal(values.name, 'Jean Dupont');
+  assert.equal(values.firstName, 'Jean');
   assert.equal(values.email, 'jean@example.com');
 });
 
 test('un formulaire vide signale tous les champs obligatoires', () => {
   const { errors } = validateReservation({}, clio, TODAY);
-  assert.deepEqual(Object.keys(errors).sort(), ['consent', 'email', 'endDate', 'name', 'phone', 'startDate']);
+  assert.deepEqual(Object.keys(errors).sort(), ['consent', 'email', 'endDate', 'firstName', 'lastName', 'phone', 'startDate']);
 });
 
 test('un email invalide est refusé', () => {
